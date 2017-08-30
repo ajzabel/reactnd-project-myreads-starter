@@ -16,10 +16,11 @@ class BooksApp extends React.Component {
     //showSearchPage: false
   }
 
+//"sJf1vQAACAAJ"
 
 
   componentDidMount() {
-    BooksAPI.get("sJf1vQAACAAJ").then((data) =>
+    BooksAPI.getAll().then((data) =>
       {
         console.log(data)
         this.setState({ bookData: data })
@@ -58,13 +59,13 @@ class BooksApp extends React.Component {
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
-              <p>{JSON.stringify(this.state)}</p>
+
             </div>
             <div className="list-books-content">
               <div>
-                <Shelf dataBook={this.state.dataBook} title={this.state.dataBook} />
-                <Shelf dataBook={this.state.dataBook} title={this.state.dataBook} />
-                <Shelf dataBook={this.state.dataBook} title={this.state.dataBook} />
+                <Shelf dataBook={this.state.bookData} />
+                <Shelf dataBook={this.state.bookData}  />
+                <Shelf dataBook={this.state.bookData} />
               </div>
             </div>
             <div className="open-search">

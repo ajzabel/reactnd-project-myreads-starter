@@ -10,9 +10,9 @@ class Shelf extends React.Component {
 
       <div className="bookshelf-books">
         <ol className="books-grid">
-          <Book title={this.props.title}
-                author={this.props.author}
-                imageSrc={this.props.bookData} />
+          <Book title={this.props.dataBook.title}
+                author={this.props.dataBook.authors}
+                imageSrc={this.props.dataBook.imageLinks} />
         </ol>
       </div>
 
