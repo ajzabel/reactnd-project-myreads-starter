@@ -29,6 +29,7 @@ class BooksApp extends React.Component {
 
   }
 
+  console.log(this.state)
   render() {
     return (
       <div className="app">
@@ -63,9 +64,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Shelf dataBook={this.state.bookData} />
-                <Shelf dataBook={this.state.bookData}  />
-                <Shelf dataBook={this.state.bookData} />
+                <Shelf bookData={this.state.bookData[0]} />
               </div>
             </div>
             <div className="open-search">

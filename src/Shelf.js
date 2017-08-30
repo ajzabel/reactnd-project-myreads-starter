@@ -3,6 +3,7 @@ import Book from './Book'
 
 
 class Shelf extends React.Component {
+  console.log(this.props)
   render() {
     return (
       <div className="bookshelf">
@@ -10,9 +11,9 @@ class Shelf extends React.Component {
 
       <div className="bookshelf-books">
         <ol className="books-grid">
-          <Book title={this.props.dataBook.title}
-                author={this.props.dataBook.authors}
-                imageSrc={this.props.dataBook.imageLinks} />
+          <Book title={this.props.bookData.title}
+                author={this.props.bookData.authors}
+                imageSrc={this.props.bookData.imageLinks} />
         </ol>
       </div>
 
