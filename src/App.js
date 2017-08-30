@@ -1,7 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import Book from './Book'
+import Shelf from './Shelf'
 
 class BooksApp extends React.Component {
   state = {
@@ -19,9 +19,13 @@ class BooksApp extends React.Component {
 
 
   componentDidMount() {
-    BooksAPI.get("sJf1vQAACAAJ").then((data) => this.setState({ bookData: data }))
-    console.log(BooksAPI.get("sJf1vQAACAAJ"))
-    console.log(this.state)
+    BooksAPI.get("sJf1vQAACAAJ").then((data) =>
+      {
+        console.log(data)
+        this.setState({ bookData: data })
+        console.log(JSON.stringify(this.state.bookData).length)
+      })
+
   }
 
   render() {
@@ -49,50 +53,28 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
+          <div>
+          {JSON.stringify(this.state.bookData).length >0 ? (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
+              <p>{JSON.stringify(this.state)}</p>
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    <Book title={this.state.bookData.title}
-                          author={this.state.bookData.authors}
-                          imageSrc={this.state.bookData.imageLinks} />
-                  </ol>
-                </div>
-
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      <Book title='Les Miserables' author='Hugo Weaving' imageSrc='' />
-                      <Book title='The Count of Monte Cristo' author='Alexander Dumas' imageSrc='' />
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      <Book title='Lord of the Rings' author='J.R.R Tolkein' imageSrc=''/>
-                      <Book title='Oh The Places You Will Go' author='Dr. Seuss' imageSrc='' />
-                      <Book title='The Bible' author='God' imageSrc='' />
-                    </ol>
-                  </div>
-                </div>
+                <Shelf dataBook={this.state.dataBook} title={this.state.dataBook} />
+                <Shelf dataBook={this.state.dataBook} title={this.state.dataBook} />
+                <Shelf dataBook={this.state.dataBook} title={this.state.dataBook} />
               </div>
             </div>
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
             </div>
           </div>
-        )}
+        ) : (<div><p>Loading...</p></div>)}
+      </div>
+    )
+      }
       </div>
     )
   }

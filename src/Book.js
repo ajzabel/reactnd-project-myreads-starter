@@ -5,6 +5,7 @@ class Book extends React.Component {
   render() {
     return (
           <li>
+          <p>{this.props.imageSrc}</p>
             <div className="book">
               <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.imageSrc})` }}></div>
