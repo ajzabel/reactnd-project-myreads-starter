@@ -3,8 +3,10 @@ import Book from './Book'
 
 
 class Shelf extends React.Component {
-  console.log(this.props)
+
   render() {
+
+    console.log(this.props)
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">Currently Reading</h2>
