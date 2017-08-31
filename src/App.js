@@ -33,7 +33,7 @@ class BooksApp extends React.Component {
     console.log(shelf)
     BooksAPI.update(book, shelf).then((book) =>
     {
-      this.setState({  bookData: book })
+      this.setState((prevState, book) => prevState.map(book => ))
     })
   }
 
@@ -74,7 +74,7 @@ class BooksApp extends React.Component {
                 <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                   <ol className="books-grid">
-                      {this.state.bookData.filter(bookData => bookData.shelf === "currentlyReading").map(bookData => <Book onChangeShelf={this.changeShelf()} key={bookData.id} bookData={bookData} />)}
+                      {this.state.bookData.filter(bookData => bookData.shelf === "currentlyReading").map(bookData => <Book onChangeShelf={this.changeShelf} key={bookData.id} bookData={bookData} />)}
                   </ol>
                   </div>
               </div>
@@ -83,7 +83,7 @@ class BooksApp extends React.Component {
               <h2 className="bookshelf-title">Want to Read</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.bookData.filter(bookData => bookData.shelf === "wantToRead").map(bookData => <Book onChangeShelf={this.changeShelf()} key={bookData.id} bookData={bookData} />)}
+                  {this.state.bookData.filter(bookData => bookData.shelf === "wantToRead").map(bookData => <Book onChangeShelf={this.changeShelf} key={bookData.id} bookData={bookData} />)}
                 </ol>
               </div>
             </div>
@@ -91,7 +91,7 @@ class BooksApp extends React.Component {
               <h2 className="bookshelf-title">Read</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.bookData.filter(bookData => bookData.shelf === "read").map(bookData => <Book onChangeShelf={this.changeShelf()} key={bookData.id} bookData={bookData} />)}
+                  {this.state.bookData.filter(bookData => bookData.shelf === "read").map(bookData => <Book onChangeShelf={this.changeShelf} key={bookData.id} bookData={bookData} />)}
                 </ol>
               </div>
             </div>
