@@ -28,8 +28,13 @@ class BooksApp extends React.Component {
 
   }
 
-  changeShelf = (shelf, shelfValue) => {
-    this.setState({ shelf= shelfValue })
+  changeShelf = (book, shelf) => {
+    console.log(book)
+    console.log(shelf)
+    BooksAPI.update(book, shelf).then((book) =>
+    {
+      this.setState({  bookData: book })
+    })
   }
 
 
@@ -59,7 +64,7 @@ class BooksApp extends React.Component {
           </div>
         ) : (
           <div>
-          {JSON.stringify(this.state.bookData).length >0 ? (
+          {JSON.stringify(this.state.bookData).length > 0 ? (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -78,7 +83,7 @@ class BooksApp extends React.Component {
               <h2 className="bookshelf-title">Want to Read</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.bookData.filter(bookData => bookData.shelf === "wantToRead").map(bookData => <Book key={bookData.id} bookData={bookData} />)}
+                  {this.state.bookData.filter(bookData => bookData.shelf === "wantToRead").map(bookData => <Book onChangeShelf={this.changeShelf()} key={bookData.id} bookData={bookData} />)}
                 </ol>
               </div>
             </div>
@@ -86,7 +91,7 @@ class BooksApp extends React.Component {
               <h2 className="bookshelf-title">Read</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.bookData.filter(bookData => bookData.shelf === "read").map(bookData => <Book key={bookData.id} bookData={bookData} />)}
+                  {this.state.bookData.filter(bookData => bookData.shelf === "read").map(bookData => <Book onChangeShelf={this.changeShelf()} key={bookData.id} bookData={bookData} />)}
                 </ol>
               </div>
             </div>
