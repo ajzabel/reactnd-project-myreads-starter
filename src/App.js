@@ -1,51 +1,63 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-
 import Book from './Book'
+import escapeRegExp from 'escape-string-regexp'
+import sortBy from 'sort-by'
 
 class BooksApp extends React.Component {
   state = {
-    bookData: []
+    bookData: [],
     /**
      * TODO: Instead of using this state variable to keep track of which page
      * we're on, use the URL in the browser's address bar. This will ensure that
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    //showSearchPage: false
+    showSearchPage: false,
+    query: '',
+    showBooks: []
   }
 
-//"sJf1vQAACAAJ"
 
 
   componentDidMount() {
-    BooksAPI.getAll().then((data) =>
+      BooksAPI.getAll().then((data) =>
       {
-        console.log(data)
+        //console.log(data)
         this.setState({ bookData: data })
       })
-
   }
 
   changeShelf = (book, shelf) => {
     //console.log(book)
     //console.log(shelf)
-    BooksAPI.update(book,shelf).then((b) => {
-      let newArray = []
-      console.log(b.currentlyReading.map((p) => BooksAPI.get(p).then((u) => console.log(u))))
-      b.currentlyReading.map((z) => BooksAPI.get(z).then((x) => {newArray.push(x)}))
-      console.log(newArray)
-      b.wantToRead.map((j) => BooksAPI.get(j).then((k)=> {newArray.push(k)}))
-      console.log(newArray)
-      b.read.map((y) => BooksAPI.get(y).then((l) => {newArray.push(l)}))
-      console.log(newArray)
-      this.setState({bookData: newArray})
+
+    BooksAPI.update(book,shelf).then(()=> {
+      book.shelf = shelf
+      this.setState(state => ({bookData: state.bookData.filter(b=> b.id!==book.id).concat([ book ])}))
     })
 
-    //this.setState({bookData: newArray})
-
   }
+
+  componentDidUpdate = (prevProps, prevState ) => {
+    console.log(prevState.query)
+    console.log(this.state.query)
+    if (this.state.query !== prevState.query) {
+      const match = new RegExp(escapeRegExp(this.state.query), 'i')
+      BooksAPI.search(this.state.query, 10000).then((data) => {
+        this.setState({showBooks: data.filter((book) => match.test(book.title))
+          })
+        })
+      }
+  }
+
+
+  updateQuery = (query) => {
+    //console.log(this.state.showBooks)
+    //console.log(this.state.query)
+    this.setState({ query: query.trim() })
+}
 
 
   render() {
@@ -64,12 +76,17 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
+                <input type="text"
+                        placeholder="Search by title or author"
+                        value={this.state.query}
+                        onChange={(event) => this.updateQuery(event.target.value)}/>
 
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+                {this.state.showBooks.map(book => <Book onChangeShelf={this.changeShelf} key={book.id} bookData={book}/>)}
+              </ol>
             </div>
           </div>
         ) : (
