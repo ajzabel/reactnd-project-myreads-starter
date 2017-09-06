@@ -29,20 +29,22 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, shelf) => {
-    console.log(book)
-    console.log(shelf)
-    var newArray = []
+    //console.log(book)
+    //console.log(shelf)
     BooksAPI.update(book,shelf).then((b) => {
-      //var newArray = []
+      let newArray = []
+      console.log(b.currentlyReading.map((p) => BooksAPI.get(p).then((u) => console.log(u))))
       b.currentlyReading.map((z) => BooksAPI.get(z).then((x) => {newArray.push(x)}))
+      console.log(newArray)
       b.wantToRead.map((j) => BooksAPI.get(j).then((k)=> {newArray.push(k)}))
+      console.log(newArray)
       b.read.map((y) => BooksAPI.get(y).then((l) => {newArray.push(l)}))
       console.log(newArray)
-      //this.setState({bookData: newArray})
+      this.setState({bookData: newArray})
     })
 
-    this.setState({bookData: newArray})
-    this.forceUpdate()
+    //this.setState({bookData: newArray})
+
   }
 
 
