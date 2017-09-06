@@ -43,15 +43,20 @@ class BooksApp extends React.Component {
   componentDidUpdate = (prevProps, prevState ) => {
     console.log(prevState.query)
     console.log(this.state.query)
-    if (this.state.query !== prevState.query) {
-      const match = new RegExp(escapeRegExp(this.state.query), 'i')
-      BooksAPI.search(this.state.query, 10000).then((data) => {
-        this.setState({showBooks: data.filter((book) => match.test(book.title)).sort(sortBy('title'))
+    if(this.state.query) {
+      if (this.state.query !== prevState.query) {
+        const match = new RegExp(escapeRegExp(this.state.query), 'i')
+        BooksAPI.search(this.state.query, 10000).then((data) => {
+          this.setState({showBooks: data.filter((book) => match.test(book.title)).sort(sortBy('title'))
           })
         })
       }
-
-
+    }
+    else {
+      if(this.state.query !== prevState.query) {
+        this.setState({showBooks: [], query: ''})
+      }
+    }
   }
 
 
