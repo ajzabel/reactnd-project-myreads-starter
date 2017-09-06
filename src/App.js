@@ -46,10 +46,12 @@ class BooksApp extends React.Component {
     if (this.state.query !== prevState.query) {
       const match = new RegExp(escapeRegExp(this.state.query), 'i')
       BooksAPI.search(this.state.query, 10000).then((data) => {
-        this.setState({showBooks: data.filter((book) => match.test(book.title))
+        this.setState({showBooks: data.filter((book) => match.test(book.title)).sort(sortBy('title'))
           })
         })
       }
+
+
   }
 
 
