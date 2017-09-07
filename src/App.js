@@ -4,6 +4,9 @@ import './App.css'
 import Book from './Book'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
+import { Link, Route } from 'react-router-dom'
+import Search from './Search'
+import myBooks from './myBooks'
 
 class BooksApp extends React.Component {
   state = {
@@ -14,7 +17,6 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false,
     query: '',
     showBooks: []
   }
@@ -70,10 +72,10 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
+        <Route path="/search" render={() => (
           <div className="search-books">
             <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+              <Link to="/" className="close-search">Close</Link>
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -88,6 +90,7 @@ class BooksApp extends React.Component {
                         value={this.state.query}
                         onChange={(event) => this.updateQuery(event.target.value)}/>
 
+
               </div>
             </div>
             <div className="search-books-results">
@@ -96,7 +99,9 @@ class BooksApp extends React.Component {
               </ol>
             </div>
           </div>
-        ) : (
+        )}/>
+
+        <Route exact path="/" render={() => (
           <div>
           {JSON.stringify(this.state.bookData).length > 0 ? (
           <div className="list-books">
@@ -131,13 +136,12 @@ class BooksApp extends React.Component {
             </div>
 
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+              <Link to="/search" className="open-search">Search</Link>
             </div>
           </div>
         ) : (<div><p>Loading...</p></div>)}
       </div>
-    )
-      }
+    )}/>
       </div>
     )
   }
