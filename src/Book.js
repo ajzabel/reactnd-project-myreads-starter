@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css'
 
 class Book extends React.Component {
+
   render() {
     return (
           <li>
@@ -19,7 +20,9 @@ class Book extends React.Component {
                   </div>
                 </div>
                 <div className="book-title">{this.props.bookData.title}</div>
-                <div className="book-authors">{this.props.bookData.authors}</div>
+                <div className="book-authors">{this.props.bookData.authors.length < 2 ? (this.props.bookData.authors) : (this.props.bookData.authors.map((currentValue, index, author) => (index < (author.length - 1) ?
+                                                                                                                                                        (currentValue + ", ") :
+                                                                                                                                                        (currentValue))))}</div>
               </div>
             </li>
 
