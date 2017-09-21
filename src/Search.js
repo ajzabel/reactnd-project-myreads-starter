@@ -2,10 +2,42 @@ import React from 'react'
 import './App.css'
 import { Link } from 'react-router-dom'
 import Book from './Book'
+import sortBy from 'sort-by'
+import escapeRegExp from 'escape-string-regexp'
+import * as BooksAPI from './BooksAPI'
 
 
 
 class Search extends React.Component {
+
+  state = {
+    query: '',
+    showBooks: []
+  }
+
+  componentDidUpdate = (prevProps, prevState ) => {
+    if(this.state.query) {
+      if (this.state.query !== prevState.query) {
+        const match = new RegExp(escapeRegExp(this.state.query), 'i')
+        BooksAPI.search(this.state.query, 10000).then((data) => {
+
+          this.setState({showBooks: data.filter((book) => match.test(book.title)).sort(sortBy('title'))
+          })
+        })
+      }
+    }
+    else {
+      if(this.state.query !== prevState.query) {
+        this.setState(state => ({showBooks: [], query:''}))
+      }
+    }
+  }
+
+  updateQuery = (query) => {
+    this.setState({ query: query.trim() })
+  }
+
+
   render() {
     return (
       <div className="search-books">
@@ -22,15 +54,15 @@ class Search extends React.Component {
             */}
             <input type="text"
                     placeholder="Search by title or author"
-                    value={this.props.bookState.query}
-                    onChange={(event) => this.props.onUpdateQuery(event.target.value)}/>
+                    value={this.state.query}
+                    onChange={(event) => this.updateQuery(event.target.value)}/>
 
 
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.props.bookState.showBooks.map(book => <Book onChangeShelf={this.props.onChangeShelfSearch} key={book.id} bookData={book}/>)}
+            {this.state.showBooks.map(book => <Book onChangeShelf={this.props.onChangeShelfSearch} key={book.id} bookData={book}/>)}
           </ol>
         </div>
       </div>
