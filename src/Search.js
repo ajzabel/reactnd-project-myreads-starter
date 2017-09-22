@@ -23,7 +23,7 @@ class Search extends React.Component {
           if (!data.error) {
             this.setState(
                  {showBooks: data.map((b) => {
-                      let  shelfBook= this.state.showBooks.find((book) => book.id === b.id);
+                      let  shelfBook= this.props.bookState.bookData.find((book) => book.id === b.id);
                       if (shelfBook) {
                            return shelfBook;
                       } else {
